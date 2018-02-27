@@ -6,6 +6,10 @@ def separate_texts(text):
     return tagger.parse(text)
 
 
-def morph(text):
+def morph(text, option='名詞'):
     tagger = MeCab.Tagger()
-    return tagger.parse(text)
+    node = tagger.parseToNode(text)
+    while node:
+        if node.feature.startswith(option):
+            return node.surface
+        node = node.next
