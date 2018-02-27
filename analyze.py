@@ -7,9 +7,12 @@ def separate_texts(text):
 
 
 def morph(text, option='名詞'):
-    tagger = MeCab.Tagger()
+    tagger = MeCab.Tagger('-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd')
     node = tagger.parseToNode(text)
     while node:
         if node.feature.startswith(option):
-            return node.surface
+            try:
+                return node.surface
+            except UnicodeDecodeError:
+                return ''
         node = node.next
