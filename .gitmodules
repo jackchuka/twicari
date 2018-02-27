@@ -1,3 +1,4 @@
 [submodule "neologd"]
 	path = neologd
 	url = https://github.com/neologd/mecab-ipadic-neologd.git
+	ignore = dirty
