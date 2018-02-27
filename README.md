@@ -9,4 +9,5 @@ brew install mecab-ipadic
 brew install pip
 
 pip install -r requirements.txt
+./neologd/bin/install-mecab-ipadic-neologd 
 ```
