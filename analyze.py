@@ -24,15 +24,18 @@ def morph(sentence, option='固有名詞'):
             except UnicodeDecodeError:
                 pass
         node = node.next
-    tagger = MeCab.Tagger('-Owakati -d /usr/local/lib/mecab/dic/mecab-ipadic-neologd')
-    text = ' '.join(str(x) for x in option_vars)
-    return tagger.parse(text)
+    return ' '.join(str(x) for x in option_vars)
 
 
 exclude_words = [
     'メルカリ',
     'メルカリアッテ',
     'mercari',
+    'フリマ',
+    'フリマアプリ',
+    'リプ',
+    'RT',
+    '拡散',
 ]
 
 
@@ -56,7 +59,7 @@ def vectorize(tweets):
     np.set_printoptions()
     tweets = np.array(tweets)
 
-    vectorizer = TfidfVectorizer()
+    vectorizer = TfidfVectorizer(min_df=3)
 
     vecs = vectorizer.fit_transform(tweets)
     word_vector = vectorizer.get_feature_names()
@@ -68,7 +71,8 @@ def vectorize(tweets):
                 dct = dict([('freq', freq), ('word', word_vector[index])])
                 dct_list.append(dct)
 
-    sorted_list = sorted(dct_list, key=lambda k: k['freq'])
+    sorted_list = [dict(t) for t in set([tuple(d.items()) for d in dct_list])]
+    sorted_list = sorted(sorted_list, key=lambda k: k['freq'])
 
     print(sorted_list)
 

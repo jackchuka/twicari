@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     for i in range(2):
         r = api.request('search/tweets', {
-            'q': 'メルカリ',
+            'q': 'メルカリ -"item.mercari" -"招待コード"',
             'lang': 'ja',
             'count': 100,
             'max_id': max_id
@@ -21,6 +21,7 @@ if __name__ == '__main__':
             # text_list.append(item['text'])
             # pnmean_list.append(analyze.get_pnmean(analyze.add_pnvalue(analyze.get_diclist(item['text']))))
             tweet_text = item['text']
+
             morphed = analyze.morph(tweet_text)
             tweets.append(morphed)
             max_id = item['id_str']
