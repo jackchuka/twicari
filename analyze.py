@@ -11,12 +11,12 @@ def separate_texts(text):
     return tagger.parse(text)
 
 
-def morph(sentence, option='名詞'):
+def morph(sentence, option='固有名詞'):
     tagger = MeCab.Tagger('-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd')
     node = tagger.parseToNode(sentence)
     option_vars = []
     while node:
-        if node.feature.startswith(option):
+        if option in node.feature:
             try:
                 option_vars.append(node.surface)
             except UnicodeDecodeError:
@@ -26,6 +26,11 @@ def morph(sentence, option='名詞'):
     return tagger.parse(' '.join(str(x) for x in option_vars))
 
 
+def isalnum(s):
+    alnumReg = re.compile(r'^[a-zA-Z0-9]+$')
+    return alnumReg.match(s) is not None
+
+
 def vectorize(document):
     np.set_printoptions()
     docs = np.array(document)
@@ -33,14 +38,19 @@ def vectorize(document):
     vectorizer = TfidfVectorizer(use_idf=True, token_pattern=u'(?u)\\b\\w+\\b')
 
     vecs = vectorizer.fit_transform(docs)
-    print(vecs.toarray())
 
     word_vector = vectorizer.get_feature_names()
+    dct_list = []
 
     for vec in vecs.toarray():
         for index, freq in enumerate(vec):
-            if freq > 0:
-                print(freq, word_vector[index])
+            if freq > 0 and len(word_vector[index]) > 1 and (not isalnum(word_vector[index])):
+                dct = dict([('freq', freq), ('word', word_vector[index])])
+                dct_list.append(dct)
+
+    sorted_list = sorted(dct_list, key=lambda k: k['freq'])
+
+    print(sorted_list)
 
 
 def get_diclist(text):

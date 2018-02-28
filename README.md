@@ -22,3 +22,8 @@ pip install -r requirements.txt
 ## install neologd dictionary
 ./neologd/bin/install-mecab-ipadic-neologd 
 ```
+
+## Run
+```bash
+python main.py
+```

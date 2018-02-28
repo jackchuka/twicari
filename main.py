@@ -10,7 +10,7 @@ if __name__ == '__main__':
     pnmean_list = []
     text_list = []
 
-    for i in range(1):
+    for i in range(2):
         r = api.request('search/tweets', {
             'q': 'メルカリ',
             'lang': 'ja',
@@ -18,8 +18,8 @@ if __name__ == '__main__':
             'max_id': max_id
         })
         for item in r:
-            text_list.append(item['text'])
-            pnmean_list.append(analyze.get_pnmean(analyze.add_pnvalue(analyze.get_diclist(item['text']))))
+            # text_list.append(item['text'])
+            # pnmean_list.append(analyze.get_pnmean(analyze.add_pnvalue(analyze.get_diclist(item['text']))))
             document.append(analyze.morph(item['text']))
             max_id = item['id_str']
     analyze.vectorize(document)
