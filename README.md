@@ -21,7 +21,9 @@ TwitterAPIたたいてTFIDFで重要そうな単語を引っ張ってきた
 {"freq": 0.3837684970901897, "word": "ｋｙｏｔｏｎｅｍｕｎｏｋｉ"}
 ```
 例えば「京都」だとこのようなツイートがホットになっています
-<img width="616" alt="2018-02-28 18 26 04" src="https://user-images.githubusercontent.com/15362961/36780003-23e67830-1cb5-11e8-8dc3-eed4baa70d08.png">
+
+<img width="400" alt="2018-02-28 18 26 04" src="https://user-images.githubusercontent.com/15362961/36780003-23e67830-1cb5-11e8-8dc3-eed4baa70d08.png">
+
 
 ## Setup on MacOS
 
