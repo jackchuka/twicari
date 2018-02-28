@@ -2,6 +2,7 @@ import MeCab
 import re
 import pandas as pd
 from statistics import mean
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 def separate_texts(text):
@@ -9,13 +10,33 @@ def separate_texts(text):
     return tagger.parse(text)
 
 
-def morph(text, option='名詞'):
-    tagger = MeCab.Tagger()
-    node = tagger.parseToNode(text)
+def morph(sentence, option='名詞'):
+    tagger = MeCab.Tagger('-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd')
+    node = tagger.parseToNode(sentence)
+    option_vars = []
     while node:
         if node.feature.startswith(option):
-            return node.surface
+            try:
+                option_vars.append(node.surface)
+            except UnicodeDecodeError:
+                pass
         node = node.next
+
+def vectorize(document):
+    np.set_printoptions()
+    docs = np.array(document)
+
+    vectorizer = TfidfVectorizer(use_idf=True, token_pattern=u'(?u)\\b\\w+\\b')
+
+    vecs = vectorizer.fit_transform(docs)
+    print(vecs.toarray())
+
+    word_vector = vectorizer.get_feature_names()
+
+    for vec in vecs.toarray():
+        for index, freq in enumerate(vec):
+            if freq > 0:
+                print(freq, word_vector[index])
 
 def get_diclist(text):
     tagger = MeCab.Tagger()
@@ -42,11 +63,11 @@ def add_pnvalue(diclist_old):
 
     diclist_new = []
     for word in diclist_old:
-        base = word['BaseForm']     
+        base = word['BaseForm']
         if base in pn_dict:
-            pn = float(pn_dict[base]) 
+            pn = float(pn_dict[base])
         else:
-            pn = 'notfound'            
+            pn = 'notfound'
         word['PN'] = pn
         diclist_new.append(word)
     return(diclist_new)

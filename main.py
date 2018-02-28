@@ -5,6 +5,16 @@ import analyze
 api = TwitterAPI(config.CONSUMER_KEY, config.CONSUMER_SECRET, config.ACCESS_TOKEN, config.ACCESS_TOKEN_SECRET)
 
 if __name__ == '__main__':
-    r = api.request('search/tweets', {'q': 'mercari', 'count': 100})
-    for item in r:
-        print(analyze.separate_texts(item['text']))
+    max_id = None
+    document = []
+    for i in range(1):
+        r = api.request('search/tweets', {
+            'q': 'メルカリ',
+            'lang': 'ja',
+            'count': 100,
+            'max_id': max_id
+        })
+        for item in r:
+            document.append(analyze.morph(item['text']))
+            max_id = item['id_str']
+    analyze.vectorize(document)
