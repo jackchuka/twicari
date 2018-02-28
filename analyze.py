@@ -22,6 +22,8 @@ def morph(sentence, option='名詞'):
             except UnicodeDecodeError:
                 pass
         node = node.next
+    tagger = MeCab.Tagger('-Owakati')
+    return tagger.parse(' '.join(str(x) for x in option_vars))
 
 
 def vectorize(document):
