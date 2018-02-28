@@ -6,7 +6,7 @@ api = TwitterAPI(config.CONSUMER_KEY, config.CONSUMER_SECRET, config.ACCESS_TOKE
 
 if __name__ == '__main__':
     max_id = None
-    document = []
+    tweets = []
     pnmean_list = []
     text_list = []
 
@@ -20,6 +20,7 @@ if __name__ == '__main__':
         for item in r:
             # text_list.append(item['text'])
             # pnmean_list.append(analyze.get_pnmean(analyze.add_pnvalue(analyze.get_diclist(item['text']))))
-            document.append(analyze.morph(item['text']))
+            tweet_text = item['text']
+            tweets.append(analyze.morph(tweet_text))
             max_id = item['id_str']
-    analyze.vectorize(document)
+    analyze.vectorize(tweets)

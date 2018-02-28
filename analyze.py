@@ -18,7 +18,8 @@ def morph(sentence, option='固有名詞'):
     while node:
         if option in node.feature:
             try:
-                option_vars.append(node.surface)
+                if len(node.surface) > 1 and (not isalnum(node.surface)):
+                    option_vars.append(node.surface)
             except UnicodeDecodeError:
                 pass
         node = node.next
@@ -31,20 +32,19 @@ def isalnum(s):
     return alnumReg.match(s) is not None
 
 
-def vectorize(document):
+def vectorize(tweets):
     np.set_printoptions()
-    docs = np.array(document)
+    tweets = np.array(tweets)
 
     vectorizer = TfidfVectorizer(use_idf=True, token_pattern=u'(?u)\\b\\w+\\b')
 
-    vecs = vectorizer.fit_transform(docs)
-
+    vecs = vectorizer.fit_transform(tweets)
     word_vector = vectorizer.get_feature_names()
-    dct_list = []
 
+    dct_list = []
     for vec in vecs.toarray():
         for index, freq in enumerate(vec):
-            if freq > 0 and len(word_vector[index]) > 1 and (not isalnum(word_vector[index])):
+            if freq > 0:
                 dct = dict([('freq', freq), ('word', word_vector[index])])
                 dct_list.append(dct)
 
