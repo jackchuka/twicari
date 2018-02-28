@@ -9,6 +9,8 @@ if __name__ == '__main__':
     tweets = []
     pnmean_list = []
     text_list = []
+    count = 0
+    last_created = None
 
     for i in range(2):
         r = api.request('search/tweets', {
@@ -20,9 +22,11 @@ if __name__ == '__main__':
         for index, item in enumerate(r):
             # text_list.append(item['text'])
             # pnmean_list.append(analyze.get_pnmean(analyze.add_pnvalue(analyze.get_diclist(item['text']))))
+            count += 1
             tweet_text = item['text']
-
-            morphed = analyze.morph(tweet_text)
-            tweets.append(morphed)
+            text_list.append(tweet_text)
             max_id = item['id_str']
+            last_created = item['created_at']
+        morphed = analyze.morph(' '.join(str(x) for x in text_list))
+        tweets.append(morphed)
     analyze.vectorize(tweets)

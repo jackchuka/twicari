@@ -59,7 +59,7 @@ def vectorize(tweets):
     np.set_printoptions()
     tweets = np.array(tweets)
 
-    vectorizer = TfidfVectorizer(min_df=3)
+    vectorizer = TfidfVectorizer()
 
     vecs = vectorizer.fit_transform(tweets)
     word_vector = vectorizer.get_feature_names()
