@@ -18,13 +18,33 @@ def morph(sentence, option='固有名詞'):
     while node:
         if option in node.feature:
             try:
-                if len(node.surface) > 1 and (not isalnum(node.surface)):
-                    option_vars.append(node.surface)
+                text = node.surface
+                if not is_exclude_word(text):
+                    option_vars.append(text)
             except UnicodeDecodeError:
                 pass
         node = node.next
-    tagger = MeCab.Tagger('-Owakati')
-    return tagger.parse(' '.join(str(x) for x in option_vars))
+    tagger = MeCab.Tagger('-Owakati -d /usr/local/lib/mecab/dic/mecab-ipadic-neologd')
+    text = ' '.join(str(x) for x in option_vars)
+    return tagger.parse(text)
+
+
+exclude_words = [
+    'メルカリ',
+    'メルカリアッテ',
+    'mercari',
+]
+
+
+def is_exclude_word(text):
+    if len(text) <= 1:
+        return True
+    if isalnum(text):
+        return True
+    for word in exclude_words:
+        if word == text:
+            return True
+    return False
 
 
 def isalnum(s):
@@ -36,7 +56,7 @@ def vectorize(tweets):
     np.set_printoptions()
     tweets = np.array(tweets)
 
-    vectorizer = TfidfVectorizer(use_idf=True, token_pattern=u'(?u)\\b\\w+\\b')
+    vectorizer = TfidfVectorizer()
 
     vecs = vectorizer.fit_transform(tweets)
     word_vector = vectorizer.get_feature_names()
@@ -71,7 +91,7 @@ def add_pnvalue(diclist_old):
         'dictionary/pn_ja.dic.txt',
         sep=':',
         encoding='Shift-JIS',
-        names=('Word', 'Reading', 'POS', 'PN')
+        names=('Word', 'Reading', 'POS', 'PN'),
     )
     word_list = list(pn_df['Word'])
     pn_list = list(pn_df['PN'])  # 中身の型はnumpy.float64

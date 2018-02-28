@@ -17,10 +17,11 @@ if __name__ == '__main__':
             'count': 100,
             'max_id': max_id
         })
-        for item in r:
+        for index, item in enumerate(r):
             # text_list.append(item['text'])
             # pnmean_list.append(analyze.get_pnmean(analyze.add_pnvalue(analyze.get_diclist(item['text']))))
             tweet_text = item['text']
-            tweets.append(analyze.morph(tweet_text))
+            morphed = analyze.morph(tweet_text)
+            tweets.append(morphed)
             max_id = item['id_str']
     analyze.vectorize(tweets)
