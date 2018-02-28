@@ -4,9 +4,13 @@ idna==2.6
 mecab-python3==0.7
 numpy==1.14.1
 oauthlib==2.0.6
+pandas==0.22.0
+python-dateutil==2.6.1
+pytz==2018.3
 requests==2.18.4
 requests-oauthlib==0.8.0
 scikit-learn==0.19.1
 scipy==1.0.0
+six==1.11.0
 TwitterAPI==2.4.8
 urllib3==1.22
