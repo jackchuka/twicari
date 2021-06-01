@@ -13,4 +13,4 @@ scikit-learn==0.19.1
 scipy==1.0.0
 six==1.11.0
 TwitterAPI==2.4.8
-urllib3==1.22
+urllib3==1.26.5
