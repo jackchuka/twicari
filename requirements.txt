@@ -2,7 +2,7 @@ certifi==2018.1.18
 chardet==3.0.4
 idna==2.6
 mecab-python3==0.7
-numpy==1.14.1
+numpy==1.22.0
 oauthlib==2.0.6
 pandas==0.22.0
 python-dateutil==2.6.1
